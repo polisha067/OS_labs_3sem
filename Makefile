@@ -1,38 +1,18 @@
-filename=report
 CC = gcc
 CFLAGS = -std=c11 -Wall -Wextra -Wpedantic -O2
+LDLIBS = -pthread -lm
 
-.PHONY: lab2 clean-lab2
+.PHONY: all clean clean-lab3
 
-pdf:
-	pdflatex ${filename}.tex
+all: lab3 benchmark
 
-lab2: parent child
+lab3: main.c
+	$(CC) $(CFLAGS) main.c -o lab3 $(LDLIBS)
 
-parent: parent.c
-	$(CC) $(CFLAGS) parent.c -o parent
+benchmark: benchmark.c lab3
+	$(CC) $(CFLAGS) benchmark.c -o benchmark -lm
 
-child: child.c
-	$(CC) $(CFLAGS) child.c -o child
+clean: clean-lab3
 
-clean-lab2:
-	rm -f parent child
-
-text: html
-	html2text -width 100 -style pretty ${filename}/${filename}.html | sed -n '/./,$$p' | head -n-2 >${filename}.txt
-
-html:
-	@#latex2html -split +0 -info "" -no_navigation ${filename}
-	htlatex ${filename}
-
-ps:	dvi
-	dvips -t letter ${filename}.dvi
-
-dvi:
-	latex ${filename}
-	bibtex ${filename}||true
-	latex ${filename}
-	latex ${filename}
-
-clean:
-	rm -f ${filename}.{ps,pdf,log,aux,out,dvi,bbl,blg}
+clean-lab3:
+	rm -f lab3 benchmark
