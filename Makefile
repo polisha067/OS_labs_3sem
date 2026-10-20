@@ -1,7 +1,22 @@
 filename=report
+CC = gcc
+CFLAGS = -std=c11 -Wall -Wextra -Wpedantic -O2
+
+.PHONY: lab2 clean-lab2
 
 pdf:
 	pdflatex ${filename}.tex
+
+lab2: parent child
+
+parent: parent.c
+	$(CC) $(CFLAGS) parent.c -o parent
+
+child: child.c
+	$(CC) $(CFLAGS) child.c -o child
+
+clean-lab2:
+	rm -f parent child
 
 text: html
 	html2text -width 100 -style pretty ${filename}/${filename}.html | sed -n '/./,$$p' | head -n-2 >${filename}.txt
