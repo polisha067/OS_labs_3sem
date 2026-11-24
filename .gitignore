@@ -1,4 +1,5 @@
-/parent
-/child
+/src/program1
+/src/program2
+/src/libimpl*.so
+/src/libimpl*.dylib
 /.vscode/
-/.vscode-lab2-backup*/
